@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Online Quiz Maker</title>
+</head>
+<body>
+    <header>
+        <h1>MindMaze</h1>
+        <nav>
+            <button onclick="showSection('home')">Home</button>
+            <button onclick="showSection('about')">About</button>
+            <button onclick="showSection('howToCreate')">How to Create</button>
+            <button onclick="showSection('sampleQuiz')">Sample Quiz</button>
+            <button onclick="showSection('createQuiz')">Create Quiz</button>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Home Section -->
+        <section id="home" class="content">
+            <div class="content">
+                <h2>Welcome to MindMaze!</h2>
+                <p>Your ultimate platform for creating and taking quizzes. Start now to challenge your mind!</p>
+                <img src="https://cdn.pixabay.com/photo/2020/09/23/07/53/quiz-5595288_1280.jpg" alt="Welcome Image">
+                <p>Our features include personalized quizzes, progress tracking, and much more.</p>
+            </div>
+            <!-- Login Section -->
+            <div id="login" class="auth-section">
+                <h3>Login</h3>
+                <form id="loginForm">
+                    <input type="text" placeholder="Username" required>
+                    <input type="password" placeholder="Password" required>
+                    <button type="submit">Login</button>
+                </form>
+                <p>Don't have an account? <a href="#" onclick="toggleAuth('register')">Register</a></p>
+            </div>
+
+            <!-- Registration Section -->
+            <div id="register" class="auth-section hidden">
+                <h3>Register</h3>
+                <form id="registerForm">
+                    <input type="text" placeholder="Username" required>
+                    <input type="password" placeholder="Password" required>
+                    <button type="submit">Register</button>
+                </form>
+                <p>Already have an account? <a href="#" onclick="toggleAuth('login')">Login</a></p>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="content hidden">
+            <h2>About MindMaze</h2>
+            <p>MindSpark is a fun and interactive platform designed to make learning exciting. Whether you're a student looking to test your knowledge or someone just looking for a fun way to challenge friends, MindSpark offers a wide range of quiz options to suit every interest and learning style.</p>
+            <button onclick="showSection('home')">Back to Home</button>
+        </section>
+
+        <!-- How to Create Section -->
+        <section id="howToCreate" class="content hidden">
+            <h2>How to Create a Quiz</h2>
+            <p>Follow these steps to create your own quiz:</p>
+            <ol>
+                <li>Click "Create Quiz".</li>
+                <li>Enter a title and add questions.</li>
+                <li>Customize answer options and select correct answers.</li>
+                <li>Save and share your quiz!</li>
+            </ol>
+            <button onclick="showSection('home')">Back to Home</button>
+        </section>
+
+        <!-- Sample Quiz Section -->
+        <section id="sampleQuiz" class="content hidden">
+            <h2>Sample Quiz: Test Your Knowledge!</h2>
+            <p>Answer the questions below and check how many you got right!</p>
+            <div class="question">
+                <p><strong>Question 1:</strong> What is the capital of France?</p>
+                <ul>
+                    <li><input type="radio" name="q1" value="A"> A. Berlin</li>
+                    <li><input type="radio" name="q1" value="B"> B. Madrid</li>
+                    <li><input type="radio" name="q1" value="C"> C. Paris</li>
+                    <li><input type="radio" name="q1" value="D"> D. Rome</li>
+                </ul>
+            </div>
+            <button onclick="submitSampleQuiz()">Submit Quiz</button>
+            <p id="quizResult" class="hidden"></p>
+            <button onclick="showSection('home')">Back to Home</button>
+        </section>
+
+        <!-- Create Quiz Section -->
+        <section id="createQuiz" class="content hidden">
+            <h2>Create Your Quiz</h2>
+            <form id="quizForm">
+                <div class="quiz-header">
+                    <input type="text" placeholder="Enter Quiz Title" required id="quizTitle">
+                    <select id="quizCategory" required>
+                        <option value="generalKnowledge">General Knowledge</option>
+                        <option value="science">Science</option>
+                        <option value="history">History</option>
+                        <option value="technology">Technology</option>
+                        <option value="entertainment">Entertainment</option>
+                    </select>
+                </div>
+                <div id="questionsContainer"></div>
+                <button type="button" onclick="addQuestion()">Add Question</button>
+                <button type="submit">Save Quiz</button>
+            </form>
+            <button onclick="showSection('home')">Back to Home</button>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 MindSpark. All rights reserved.</p>
+        <p>Follow us on <a href="#">Facebook</a>, <a href="#">Twitter</a>, <a href="#">Instagram</a>.</p>
+    </footer>
+
+    <script>
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('.content');
+            sections.forEach(section => section.classList.add('hidden'));
+            document.getElementById(sectionId).classList.remove('hidden');
+        }
+
+        function toggleAuth(authType) {
+            document.getElementById('login').classList.toggle('hidden', authType !== 'login');
+            document.getElementById('register').classList.toggle('hidden', authType !== 'register');
+        }
+
+        function addQuestion() {
+            const container = document.getElementById('questionsContainer');
+            const questionDiv = document.createElement('div');
+            questionDiv.innerHTML = `
+                <input type="text" placeholder="Question" required>
+                <input type="text" placeholder="Option 1" required>
+                <input type="text" placeholder="Option 2" required>
+                <input type="text" placeholder="Option 3">
+                <input type="text" placeholder="Option 4">
+                <select required>
+                    <option value="" disabled selected>Select Correct Answer</option>
+                    <option value="1">Option 1</option>
+                    <option value="2">Option 2</option>
+                    <option value="3">Option 3</option>
+                    <option value="4">Option 4</option>
+                </select>
+            `;
+            container.appendChild(questionDiv);
+        }
+
+        function submitSampleQuiz() {
+            const answers = ['C', 'A', 'B', 'B', 'D', 'B', 'B'];
+            let score = 0;
+            for (let i = 1; i <= 7; i++) {
+                const selected = document.querySelector(`input[name="q${i}"]:checked`);
+                if (selected && selected.value === answers[i - 1]) score++;
+            }
+            document.getElementById('quizResult').innerText = `You scored ${score}/7!`;
+            document.getElementById('quizResult').classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
